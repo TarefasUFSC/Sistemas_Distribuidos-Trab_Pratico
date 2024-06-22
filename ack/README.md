@@ -43,43 +43,55 @@ Já dentro do bash do cliente, inicie o programa com:
 `python client.py`
 
 Ele vai listar os processos ativos e perguntar para quem você quer mandar uma mensagem. Escreva o ID correspondente da lista e pressione Enter.
-
 ## Descrição do Funcionamento da Aplicação
 
 ### Fase de Registro
 
-Durante esta fase, os nós de processamento registram-se no Servidor de Descobrimento. O cliente então usa essas informações para determinar quais nós estão disponíveis para processar mensagens.
+Durante esta fase, os nós de processamento registram-se no Servidor de Descobrimento. Ao se registrar com um POST o Servidor de descobrimento atribui um ID (UUID) ao processo que requisitou o registro.
 
-![Fase de Registro](https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_registro.png)
+<div align="center">
+<img src="https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_registro.png" width="450" >
+</div>
 
 ### Fase de Descobrimento
 
-Nesta fase, o cliente faz uma requisição POST ao Servidor de Descobrimento para obter uma lista de receivers disponíveis. O servidor responde com um JSON contendo a lista. O cliente então pergunta aos receivers quem está disponível para processar a mensagem.
+Nesta fase, o cliente faz uma requisição POST ao Servidor de Descobrimento para obter uma lista de receivers disponíveis. O servidor responde com um JSON contendo a lista.
 
-![Fase de Descobrimento](https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_descobrimento.png)
+<div align="center">
+<img src="https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_descobrimento.png" width="450" >
+</div>
 
 ### Fase de Mensagem (Sucesso)
 
-Quando o cliente finalmente recebe o ACK, a mensagem foi processada com sucesso pelo nó.
+O cliente envia uma mensagem para um dos Nós de processamento (Ou receiver) e recebe um ACK dele de volta dentro do tempo limite (timeout).
 
-![Fase de Mensagem (Sucesso)](https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_mensagem_sucesso.png)
+<div align="center">
+<img src="https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_mensagem_sucesso.png" width="450" >
+</div>
 
 ### Fase de Mensagem (Erro 1)
 
-O cliente envia uma mensagem a um nó de processamento e espera um ACK. Se o nó falhar (não responde), o cliente não recebe o ACK.
+O cliente envia uma mensagem a um nó de processamento e espera um ACK. Contudo, neste caso, um erro aconteceu no nó e ele não responde com um ACK.
 
-![Fase de Mensagem (Erro 1)](https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_mensagem_erro_1.png)
+<div align="center">
+<img src="https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_mensagem_erro_1.png" width="450" >
+</div>
 
 ### Fase de Mensagem (Erro 2)
 
-O cliente, ao não receber o ACK, tenta novamente enviar a mensagem.
+O cliente, ao não receber o ACK, decide tentar novamente enviar a mensagem.
 
-![Fase de Mensagem (Erro 2)](https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_mensagem_erro_2.png)
+<div align="center">
+<img src="https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_mensagem_erro_2.png" width="450" >
+</div>
 
 ### Fase de Mensagem (Erro 3)
 
 O cliente continua tentando até receber um ACK. A ilustração mostra o cliente finalmente recebendo o ACK após várias tentativas.
 
-![Fase de Mensagem (Erro 3)](https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_mensagem_erro_3.png)
+<div align="center">
+<img src="https://raw.githubusercontent.com/TarefasUFSC/Sistemas_Distribuidos-Trab_Pratico/main/docs/ack-fase_de_mensagem_erro_3.png" width="450" >
+</div>
 
-Essas fases demonstram como a aplicação lida com a descoberta de nós disponíveis, envio de mensagens, tratamento de erros e registro de nós.
+
+
