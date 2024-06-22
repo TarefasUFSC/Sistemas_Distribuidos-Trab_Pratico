@@ -1,12 +1,13 @@
 const svg = d3.select("#chart").append("svg")
     .attr("width", "100%")
-    .attr("height", "400px")  // Definir uma altura fixa para o SVG
+    .attr("height", "400px")  // Fixed height for SVG
     .attr("viewBox", "0 0 1200 400")
     .attr("preserveAspectRatio", "xMidYMid meet");
 
-const socket = io("http://localhost:5000");
+// Initialize the socket as a global variable
+var socket = io("http://localhost:5000");
 
-// Mapear status para cores pastel
+// Mapping status to pastel colors
 const statusColors = {
     green: '#77dd77',
     blue: '#aec6cf',
@@ -15,32 +16,28 @@ const statusColors = {
 
 const tooltip = d3.select("#tooltip");
 
+let selectedServer = null; // To store the currently selected server
+
 function updateServers(servers) {
-    console.log("Servers data received:", servers);  // Log the received data
     const serverData = Object.keys(servers).map(key => ({
         name: key,
         status: servers[key].status,
         data: servers[key].data
     }));
 
-    console.log("Processed server data:", serverData);  // Log the processed server data
-
     const circles = svg.selectAll("circle").data(serverData, d => d.name);
 
     circles.enter()
         .append("circle")
         .attr("class", "server")
-        .attr("id", d => d.name)  // Set the circle ID to the server name
+        .attr("id", d => d.name)
         .attr("cx", (d, i) => 100 + i * 150)
         .attr("cy", 200)
         .attr("r", 40)
         .style("fill", d => statusColors[d.status])
         .on("click", function(event, d) {
-            console.log("Circle clicked:");
-            console.log("Event:", event);
-            console.log("Data:", d);
-            console.log("Server name:", event['name']);
-            fetchServerDetails(event['name']);
+            selectedServer = event['name']; // Update selected server
+            fetchServerDetails(event['name']); // Fetch details for the clicked server
         })
         .merge(circles)
         .transition()
@@ -52,7 +49,7 @@ function updateServers(servers) {
 
 socket.on("request_processed", updateServers);
 
-// Inicializar
+// Initialize with server data
 d3.json("http://localhost:5000/servers").then(updateServers);
 
 function sendRequest() {

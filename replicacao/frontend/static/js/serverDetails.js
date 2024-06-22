@@ -14,25 +14,30 @@ function getStatusDescription(status) {
     }
 }
 
-function fetchServerDetails(serverName) {
-    console.log("Fetching details for:", serverName);
-    fetch(`http://localhost:5000/servers`)
-        .then(response => response.json())
-        .then(servers => {
-            const serverDetail = servers[serverName];
-            if (serverDetail) {
-                const statusDescription = getStatusDescription(serverDetail.status);
-                detailsContent.innerHTML = `
-                    <p><strong>Nome:</strong> ${serverName}</p>
-                    <p><strong>Status:</strong> ${statusDescription}</p>
-                    <p><strong>Dados Processados:</strong> ${serverDetail.data.join(", ")}</p>
-                `;
-                serverDetailsSection.classList.remove("hidden");
-            } else {
-                console.error('Server details not found for:', serverName);
-            }
-        })
-        .catch(error => console.error('Error fetching server details:', error));
+socket.on("server_details_updated", serverDetail => {
+    updateServerDetails(serverDetail);
+});
+
+function updateServerDetails(serverDetail) {
+    if (selectedServer && serverDetail.name === selectedServer) { // Only update if the details are for the selected server
+        const statusDescription = getStatusDescription(serverDetail.status);
+        const processedDataList = serverDetail.processed_data.join(", ");
+        const synchronizedDataList = serverDetail.synchronized_data.join(", ");
+
+        detailsContent.innerHTML = `
+            <p><strong>Nome:</strong> ${serverDetail.name}</p>
+            <p><strong>Status:</strong> ${statusDescription}</p>
+            <p><strong>Dados Processados:</strong> ${processedDataList}</p>
+            <p><strong>Dados Sincronizados:</strong> ${synchronizedDataList}</p>
+        `;
+        serverDetailsSection.classList.remove("hidden");
+    }
 }
 
+function fetchServerDetails(serverName) {
+    socket.emit("fetch_server_details", serverName);
+    selectedServer = serverName; // Update the selected server
+}
+
+// Expose fetchServerDetails globally
 window.fetchServerDetails = fetchServerDetails;
