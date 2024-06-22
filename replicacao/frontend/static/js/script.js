@@ -52,12 +52,14 @@ socket.on("request_processed", updateServers);
 // Initialize with server data
 d3.json("http://localhost:5000/servers").then(updateServers);
 
+let requestCounter = 1; // Initialize the request counter
+
 function sendRequest() {
-    const request = `data-${Math.floor(Math.random() * 100)}`;
+    const request = `data-${requestCounter++}`;
     socket.emit('send_request', { request });
 }
 
 function sendFaultRequest() {
-    const request = `data-${Math.floor(Math.random() * 100)}`;
+    const request = `data-${requestCounter++}`;
     socket.emit('send_fault_request', { request });
 }

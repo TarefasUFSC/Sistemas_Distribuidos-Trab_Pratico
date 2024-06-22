@@ -4,11 +4,11 @@ const detailsContent = document.getElementById("details-content");
 function getStatusDescription(status) {
     switch (status) {
         case 'blue':
-            return 'Servidor backup em execução, pronto para assumir';
+            return 'Servidor backup (réplica), pronto para assumir';
         case 'green':
-            return 'Servidor principal em execução, tudo OK';
+            return 'Servidor em execução, tudo OK';
         case 'red':
-            return 'Servidor principal inativo, backup assumiu';
+            return 'Servidor inativo';
         default:
             return 'Desconhecido'; // Handle any unexpected statuses
     }
