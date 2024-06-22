@@ -1,0 +1,11 @@
+# Dockerfile do Receptor
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY receiver.py .
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+CMD ["python", "receiver.py"]

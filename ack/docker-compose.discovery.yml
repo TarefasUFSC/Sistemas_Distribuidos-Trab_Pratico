@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  discovery_server:
+    image: ack_discovery_server
+    build:
+      context: ./discovery
+      dockerfile: Dockerfile.discovery
+    volumes:
+      - ./discovery:/app
+    ports:
+      - "5000:5000"
+    restart: always

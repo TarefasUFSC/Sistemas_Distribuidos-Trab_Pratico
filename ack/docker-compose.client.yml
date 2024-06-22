@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client
+    volumes:
+      - ./client:/app
+    image: ack_client
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
