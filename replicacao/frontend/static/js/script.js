@@ -1,10 +1,8 @@
 const svg = d3.select("#chart").append("svg")
     .attr("width", "100%")
-    .attr("height", "400px")  // Fixed height for SVG
-    .attr("viewBox", "0 0 1200 400")
+    .attr("height", "400px")
     .attr("preserveAspectRatio", "xMidYMid meet");
 
-// Initialize the socket as a global variable
 var socket = io("http://localhost:5000");
 
 // Mapping status to pastel colors
@@ -17,6 +15,7 @@ const statusColors = {
 const tooltip = d3.select("#tooltip");
 
 let selectedServer = null; // To store the currently selected server
+let requestCounter = localStorage.getItem('requestCounter') ? parseInt(localStorage.getItem('requestCounter')) : 1;
 
 function updateServers(servers) {
     const serverData = Object.keys(servers).map(key => ({
@@ -27,13 +26,26 @@ function updateServers(servers) {
 
     const circles = svg.selectAll("circle").data(serverData, d => d.name);
 
+    const numServersPerRow = 8;
+    const circleSpacing = 150;
+    const rowHeight = 100;
+    const circleRadius = 40;
+
+    // Calculate the number of rows needed
+    const numRows = Math.ceil(serverData.length / numServersPerRow);
+
+    // Update SVG viewBox and height dynamically
+    const svgHeight = 100 + numRows * rowHeight;
+    svg.attr("height", svgHeight)
+       .attr("viewBox", `0 0 1200 ${svgHeight}`);
+
     circles.enter()
         .append("circle")
         .attr("class", "server")
         .attr("id", d => d.name)
-        .attr("cx", (d, i) => 100 + i * 150)
-        .attr("cy", 200)
-        .attr("r", 40)
+        .attr("cx", (d, i) => 100 + (i % numServersPerRow) * circleSpacing)
+        .attr("cy", (d, i) => 100 + Math.floor(i / numServersPerRow) * rowHeight)
+        .attr("r", circleRadius)
         .style("fill", d => statusColors[d.status])
         .on("click", function(event, d) {
             selectedServer = event['name']; // Update selected server
@@ -52,14 +64,14 @@ socket.on("request_processed", updateServers);
 // Initialize with server data
 d3.json("http://localhost:5000/servers").then(updateServers);
 
-let requestCounter = 1; // Initialize the request counter
-
 function sendRequest() {
     const request = `data-${requestCounter++}`;
     socket.emit('send_request', { request });
+    localStorage.setItem('requestCounter', requestCounter); // Update local storage
 }
 
 function sendFaultRequest() {
     const request = `data-${requestCounter++}`;
     socket.emit('send_fault_request', { request });
+    localStorage.setItem('requestCounter', requestCounter); // Update local storage
 }

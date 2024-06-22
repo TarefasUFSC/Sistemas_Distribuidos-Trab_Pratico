@@ -45,6 +45,7 @@ button:hover {
     width: 100%;
     max-width: 1200px;
     position: relative;
+    overflow: auto; /* Ensure the chart area can scroll if content overflows */
 }
 
 .server {
@@ -64,6 +65,7 @@ button:hover {
     width: 100%;
     max-width: 1200px;
     margin-top: 20px;
+    position: relative; /* Ensure it stays in the flow of the document */
 }
 
 @media (max-width: 768px) {
