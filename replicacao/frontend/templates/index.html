@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Visualization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+</head>
+<body>
+    <h1>Server Visualization</h1>
+    <div class="button-container">
+        <button onclick="sendRequest()">Send Request</button>
+        <button onclick="sendFaultRequest()">Send Fault Request</button>
+    </div>
+    <div id="chart"></div>
+    <div id="server-details" class="hidden">
+        <h2>Server Details</h2>
+        <div id="details-content"></div>
+    </div>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script src="/static/js/serverDetails.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
