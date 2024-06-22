@@ -5,6 +5,18 @@ import os
 
 DISCOVERY_SERVER = "http://discovery_server:5000"
 ACK_TIMEOUT = 5 # seconds
+
+def wait_for_discovery_server():
+    while True:
+        try:
+            response = requests.get(f"{DISCOVERY_SERVER}/receivers")
+            if response.status_code == 200:
+                break
+        except requests.exceptions.ConnectionError:
+            pass
+        print("Waiting for discovery server...", flush=True)
+        time.sleep(5)
+
 def discover_receivers():
     response = requests.get(f"{DISCOVERY_SERVER}/receivers")
     receivers = response.json()
@@ -51,6 +63,7 @@ def show_receivers(receivers):
         print(f"{i}: {receiver}", flush=True)
 
 if __name__ == "__main__":
+    wait_for_discovery_server()
     while True:
         
         print("Discovering receivers...", flush=True)
