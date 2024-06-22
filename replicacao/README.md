@@ -9,22 +9,22 @@ Para executar esta aplicação, são necessárias as seguintes instalações:
 ```bash
 /replicacao
 ├── backend/
-│   ├── app.py                  # Aplicação principal Flask
-│   ├── Dockerfile              # Dockerfile para o serviço backend
-│   ├── requirements.txt        # Dependências Python para o backend
+│   ├── app.py                   # Aplicação principal Flask
+│   ├── Dockerfile               # Dockerfile para o serviço backend
+│   ├── requirements.txt         # Dependências Python para o backend
 ├── frontend/
 │   ├── static/
 │   │   ├── css/
-│   │   │   └── styles.css      # Estilos CSS para o frontend
+│   │   │   └── styles.css       # Estilos CSS para o frontend
 │   │   ├── js/
-│   │   │   ├── script.js       # Script D3.js para visualização
-│   │   │   └── serverDetails.js# Script para manipulação de detalhes do servidor
+│   │   │   ├── script.js        # Script D3.js para visualização
+│   │   │   └── serverDetails.js # Script para manipulação de detalhes do servidor
 │   │   ├── templates/
-│   │   │   └── index.html      # Template HTML para o frontend
-│   ├── app.py                  # Aplicação Flask para servir o frontend
-│   ├── Dockerfile              # Dockerfile para o serviço frontend
-│   ├── requirements.txt        # Dependências Python para o frontend
-├── docker-compose.yml          # Arquivo Docker Compose para configurar o ambiente
+│   │   │   └── index.html       # Template HTML para o frontend
+│   ├── app.py                   # Aplicação Flask para servir o frontend
+│   ├── Dockerfile               # Dockerfile para o serviço frontend
+│   ├── requirements.txt         # Dependências Python para o frontend
+├── docker-compose.yml           # Arquivo Docker Compose para configurar o ambiente
 ```
 
 ## Clonando o Repositório
@@ -102,7 +102,7 @@ O serviço frontend fornece uma visualização do status do servidor e lida com 
 Uma vez que os containers Docker estiverem em execução, você pode acessar a aplicação:
 
 ## Acessando o Backend
-O serviço backend é executado na porta 5000. Você pode acessá-lo em [http://localhost:5000](http://localhost:5000`.
+O serviço backend é executado na porta 5000. Você pode acessá-lo em [http://localhost:5000](http://localhost:5000).
 
 ## Acessando o FrontEnd
 O serviço frontend é executado na porta 8080. Você pode acessá-lo em [http://localhost:8080](http://localhost:5000).
